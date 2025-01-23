@@ -91,7 +91,7 @@ vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
 -- Set to true if you have a Nerd Font installed and selected in the terminal
-vim.g.have_nerd_font = false
+vim.g.have_nerd_font = true
 
 -- [[ Setting options ]]
 -- See `:help vim.opt`
@@ -254,6 +254,28 @@ require('lazy').setup({
       },
     },
   },
+  {
+    'nvim-tree/nvim-tree.lua',
+    dependencies = {
+      'nvim-tree/nvim-web-devicons',
+    },
+    config = function()
+      require('nvim-tree').setup()
+    end,
+  },
+  {
+    'github/copilot.vim',
+    keys = { '<leader>Ce' },
+    config = function()
+      vim.cmd 'Copilot setup'
+      vim.keymap.set('i', '<C-f>', 'copilot#Accept("\\<CR>")', {
+        expr = true,
+        replace_keycodes = false,
+      })
+      vim.keymap.set('n', '<leader>Cd', ':Copilot disable <CR>', {})
+      vim.keymap.set('n', '<leader>Ce', ':Copilot enable <CR>', {})
+    end,
+  },
 
   -- NOTE: Plugins can also be configured to run Lua code when they are loaded.
   --
@@ -412,6 +434,7 @@ require('lazy').setup({
       vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
       vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
       vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
+      vim.keymap.set('n', '<leader>b', ':NvimTreeToggle<CR>', { desc = 'Toggle File Browser' })
 
       -- Slightly advanced example of overriding default behavior and theme
       vim.keymap.set('n', '<leader>/', function()
